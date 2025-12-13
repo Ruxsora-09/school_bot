@@ -1,7 +1,11 @@
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
-  telegramId: Number,
+  telegramId: { type: Number, required: true, unique: true },
+  name: String,
+  username: String,
+  phone: String,
+  createdAt: { type: Date, default: Date.now },
   votedFor: { type: String, default: null }
 });
 
