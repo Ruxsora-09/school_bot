@@ -8,7 +8,7 @@
     "dev": "nodemon index.js"
   },
   "repository": {
-    "type": "git",
+    "type": "module",
     "url": "git+https://github.com/Ruxsora-09/school_bot.git"
   },
   "keywords": [],

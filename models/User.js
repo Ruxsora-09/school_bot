@@ -1,13 +1,24 @@
 import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema({
-  telegramId: { type: Number, required: true, unique: true },
-  name: String,
-  username: String,
-  phone: String,
-  createdAt: { type: Date, default: Date.now },
-  votedFor: { type: String, default: null }
-});
+const userSchema = new mongoose.Schema(
+  {
+    telegramId: {
+      type: Number,
+      required: true,
+      unique: true,
+    },
 
-const User = mongoose.model("User", userSchema);
-export default User;
+    username: String,
+    firstName: String,
+    lastName: String,
+
+    votedFor: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Student",
+      default: null,
+    },
+  },
+  { timestamps: true }
+);
+
+export default mongoose.model("User", userSchema);
