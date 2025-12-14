@@ -75,7 +75,7 @@ const students = [
     ]
   },
   {
-    name: "Baxtiyorov Ulug‘bek",
+    name: "Baxtiyorov Ulug'bek",
     class: "9-B",
     photo: "./photos/Ulugbek.jpg",
     achievements: [

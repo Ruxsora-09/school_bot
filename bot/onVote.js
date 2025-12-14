@@ -6,38 +6,55 @@ import { bot } from "./bot.js";
 
 export const userState = {};
 
-// 🗳 Ovoz berish boshlash
+// 🗳 Ovoz berishni boshlash
 export default async function onVote(msgOrQ) {
-  const chatId = msgOrQ.chat?.id || msgOrQ.message?.chat?.id;
+  const chatId = msgOrQ?.chat?.id || msgOrQ?.message?.chat?.id;
   if (!chatId) return;
 
-  let user = await User.findOne({ telegramId: chatId });
-  if (!user) {
-    user = new User({ telegramId: chatId });
-    await user.save();
-  }
+  // User ma'lumotlarini DBga yozish
+  await User.findOneAndUpdate(
+    { telegramId: chatId },
+    {
+      telegramId: chatId,
+      username: msg.chat.username || null,
+      firstName: msg.chat.first_name || null,
+      lastName: msg.chat.last_name || null
+    },
+    { upsert: true, new: true }
+  );
 
-  // 🔒 agar ovoz bergan bo‘lsa
   if (user.votedFor) {
-    return bot.sendMessage(chatId, "❌ Siz allaqachon ovoz bergansiz. Qayta ovoz berish mumkin emas.");
+    return bot.sendMessage(
+      chatId,
+      "❌ Siz allaqachon ovoz bergansiz."
+    );
   }
 
   const students = await Student.find();
-  if (!students.length) {
-    return bot.sendMessage(chatId, "O‘quvchilar topilmadi.");
+
+  if (!Array.isArray(students) || students.length === 0) {
+    return bot.sendMessage(chatId, "❌ O‘quvchilar topilmadi.");
   }
 
   userState[chatId] = 0;
 
-  // ovoz berish xabarini yuborish
   await bot.sendMessage(chatId, "🗳 Ovoz berishni boshlaymiz!");
-  sendStudent(chatId, students);
+  return sendStudent(chatId, students);
 }
 
-// 🔥 Student chiqarish funksiyasi
-export function sendStudent(chatId, students) {
-  const index = userState[chatId];
+// 👤 Studentni chiqarish
+function sendStudent(chatId, students) {
+  if (!Array.isArray(students)) {
+    console.log("❌ students undefined:", students);
+    return;
+  }
+
+  const index = userState[chatId] ?? 0;
   const s = students[index];
+
+  if (!s) {
+    return bot.sendMessage(chatId, "❌ O‘quvchi topilmadi.");
+  }
 
   const caption = `
 👤 ${s.name}
@@ -45,27 +62,33 @@ export function sendStudent(chatId, students) {
 
 🎓 Yutuqlari:
 ${s.achievements.map(a => "• " + a).join("\n")}
-  `.trim();
+`.trim();
 
-  const photoPath = path.resolve(s.photo);
+  const photoPath = path.join(process.cwd(), s.photo);
 
-  bot.sendPhoto(chatId, fs.createReadStream(photoPath), {
-    caption,
-    reply_markup: {
-      inline_keyboard: [
-        [
-          { text: "⬅️ Oldingi", callback_data: "prev" },
-          { text: "➡️ Keyingi", callback_data: "next" },
-        ],
-        [
-          { text: "🗳 Ovoz berish", callback_data: `vote_${s._id}` },
-        ],
+  const keyboard = {
+    inline_keyboard: [
+      [
+        { text: "⬅️ Oldingi", callback_data: "prev" },
+        { text: "➡️ Keyingi", callback_data: "next" },
       ],
-    },
+      [{ text: "🗳 Ovoz berish", callback_data: `vote_${s._id}` }],
+    ],
+  };
+
+  if (!fs.existsSync(photoPath)) {
+    return bot.sendMessage(chatId, caption, {
+      reply_markup: keyboard,
+    });
+  }
+
+  return bot.sendPhoto(chatId, fs.createReadStream(photoPath), {
+    caption,
+    reply_markup: keyboard,
   });
 }
 
-// 🗳 Callbacklar uchun
+// 🔘 Callbacklar
 export async function handleVoteCallbacks(q) {
   const chatId = q.message.chat.id;
   const data = q.data;
@@ -73,35 +96,42 @@ export async function handleVoteCallbacks(q) {
   const students = await Student.find();
   if (!students.length) return;
 
-  if (userState[chatId] === undefined) userState[chatId] = 0;
+  if (userState[chatId] === undefined) {
+    userState[chatId] = 0;
+  }
 
-  // ⬅️ Oldingi
   if (data === "prev") {
-    userState[chatId] = (userState[chatId] - 1 + students.length) % students.length;
+    userState[chatId] =
+      (userState[chatId] - 1 + students.length) % students.length;
     return sendStudent(chatId, students);
   }
 
-  // ➡️ Keyingi
   if (data === "next") {
-    userState[chatId] = (userState[chatId] + 1) % students.length;
+    userState[chatId] =
+      (userState[chatId] + 1) % students.length;
     return sendStudent(chatId, students);
   }
 
-  // 🗳 Ovoz berish
   if (data.startsWith("vote_")) {
     const studentId = data.split("_")[1];
-
+  
     const user = await User.findOne({ telegramId: chatId });
     if (user.votedFor) {
       return bot.answerCallbackQuery(q.id, {
         text: "❌ Siz allaqachon ovoz bergansiz",
         show_alert: true,
       });
-    }
 
+    }
+  
+    // 🔥 OVOZ QO‘SHISH
+    await Student.findByIdAndUpdate(studentId, {
+      $inc: { votes: 1 },
+    });
+  
     user.votedFor = studentId;
     await user.save();
-
-    return bot.sendMessage(chatId, "✅ Ovoz qabul qilindi! Rahmat 💙");
+  
+    return bot.sendMessage(chatId, "✅ Ovoz qabul qilindi!");
   }
-}
+}  
