@@ -5,23 +5,27 @@ import fs from "fs";
 import { bot } from "./bot.js";
 
 export const userState = {};
+// ⏳ Voting deadline — example: 2025-12-20 23:59:59
+export const VOTING_DEADLINE = new Date("2025-12-24T23:59:59");
+
 
 // 🗳 Ovoz berishni boshlash
 export default async function onVote(msgOrQ) {
+
+  // ⏳ Check deadline
+if (new Date() > VOTING_DEADLINE) {
+  return bot.sendMessage(chatId, "⛔ Ovoz berish muddati tugagan.");
+}
+
+
   const chatId = msgOrQ?.chat?.id || msgOrQ?.message?.chat?.id;
   if (!chatId) return;
 
-  // User ma'lumotlarini DBga yozish
-  await User.findOneAndUpdate(
-    { telegramId: chatId },
-    {
-      telegramId: chatId,
-      username: msg.chat.username || null,
-      firstName: msg.chat.first_name || null,
-      lastName: msg.chat.last_name || null
-    },
-    { upsert: true, new: true }
-  );
+  let user = await User.findOne({ telegramId: chatId });
+  if (!user) {
+    user = new User({ telegramId: chatId });
+    await user.save();
+  }
 
   if (user.votedFor) {
     return bot.sendMessage(
@@ -90,6 +94,16 @@ ${s.achievements.map(a => "• " + a).join("\n")}
 
 // 🔘 Callbacklar
 export async function handleVoteCallbacks(q) {
+
+  // ⏳ Prevent voting after deadline
+if (new Date() > VOTING_DEADLINE && data.startsWith("vote_")) {
+  return bot.answerCallbackQuery(q.id, {
+    text: "⛔ Ovoz berish muddati tugagan.",
+    show_alert: true,
+  });
+}
+
+
   const chatId = q.message.chat.id;
   const data = q.data;
 

@@ -9,13 +9,14 @@ config();
 export const bot = new TelegramBot(process.env.BOT_TOKEN, { polling: true });
 
 const CHANNEL_ID = "@Xiva_shahar_2_IM_matbuot_xizmati";
-const ADMINS = [5515269338]; // 🔒 admin ID
+const ADMINS = [5515269338, 2018619960]; // 🔒 admin ID
+
 
 // 🔐 Obuna tekshirish
 export const checkIfUserSubscribed = async (chatId) => {
   try {
     const member = await bot.getChatMember(CHANNEL_ID, chatId);
-    return member.status !== "left" && member.status !== "kicked";
+    return member.status !== "left" && member.status !== "kicked"
   } catch {
     return false;
   }
