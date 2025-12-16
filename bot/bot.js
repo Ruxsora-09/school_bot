@@ -93,7 +93,7 @@ bot.on("callback_query", async (q) => {
     return onVote(q);
   }
 
-  if (q.data.startsWith("vote_")) {
+  if (q.data === "start_voting" || q.data.startsWith("vote_")) {
     return handleVoteCallbacks(q);
   }
 });
