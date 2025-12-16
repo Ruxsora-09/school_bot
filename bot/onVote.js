@@ -68,7 +68,10 @@ function sendStudent(chatId, students) {
 ${s.achievements.map(a => "• " + a).join("\n")}
 `.trim();
 
-  const photoPath = path.join(process.cwd(), s.photo);
+  // MongoDB dagi yo‘l nisbiy bo‘lsa ham, biz faqat fayl nomini olib,
+  // loyihaning ichidagi `Photos` papkasiga yo‘naltiramiz.
+  const fileName = path.basename(s.photo);
+  const photoPath = path.join(process.cwd(), "Photos", fileName);
 
   const keyboard = {
     inline_keyboard: [

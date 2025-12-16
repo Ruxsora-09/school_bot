@@ -10,7 +10,7 @@ export const students = [
         "Ibrat Debate: Khiva koordinatori",
         "Ingliz tili fan olimpiadasi: shahar bosqichida 1-o‘rin (10–11-sinflar o‘rtasida)"
       ],
-      photo: "../photos/Zahro.jpg"
+      photo: "../Photos/Zahro.jpg"
     },
     {
       id: 2,
@@ -26,7 +26,7 @@ export const students = [
         "CEFR B2 (58 ball)",
         "SAT: 1230 ball"
       ],
-      photo: "../photos/Dilnura.jpg"
+      photo: "../Photos/Dilnura.jpg"
     },
     {
       id: 3,
@@ -37,7 +37,7 @@ export const students = [
         "Rasm tanlovida 1-o‘rin",
         "“Turon Yulbarslari” harbiy musobaqasida 4-o‘rin"
       ],
-      photo: "../photos/Shohruz.jpg"
+      photo: "../Photos/Shohruz.jpg"
     },
     {
       id: 4,
@@ -49,7 +49,7 @@ export const students = [
         "8-mart tanlovida 2-o‘rin (2023)",
         "2025-yilda maktab bosh sardori"
       ],
-      photo: "../photos/Nurnazir.jpg"
+      photo: "../Photos/Nurnazir.jpg"
     },
     {
       id: 5,
@@ -60,7 +60,7 @@ export const students = [
         "Idrok teleko‘rsatuvi 1-bosqich — 1-o‘rin",
         "CEFR B2 (56 ball)"
       ],
-      photo: "../photos/Asadbek.jpg"
+      photo: "../Photos/Asadbek.jpg"
     },
     {
       id: 6,
@@ -73,7 +73,7 @@ export const students = [
         "Informatika fan olimpiadasi: shahar bosqichida 1-o‘rin",
         "Ingliz tili fan olimpiadasi: shahar bosqichida 1-o‘rin"
       ],
-      photo: "../photos/Ruxsora.jpg"
+      photo: "../Photos/Ruxsora.jpg"
     },
     {
       id: 7,
@@ -86,7 +86,7 @@ export const students = [
         "Maktablar Ligasi (9–11-sinflar) — 2-o‘rin (22.10.2025)",
         "Shaxmat turniri (18-may 2025) — 2-o‘rin"
       ],
-      photo: "../photos/Ulugbek.jpg"
+      photo: "../Photos/Ulugbek.jpg"
     },
     {
       id: 8,
@@ -99,7 +99,7 @@ export const students = [
         "Youth Science Fair — 'Eng yaxshi taqdimot'",
         "“Ixtirokchilikka qadam” loyihasida faol ishtirok"
       ],
-      photo: "../photos/Madina.jpg"
+      photo: "../Photos/Madina.jpg"
     },
     {
       id: 9,
@@ -112,7 +112,7 @@ export const students = [
         "Maktab tomonidan 10 ta sertifikat bilan taqdirlangan",
         "“Kitobxon millatmiz” respublika tanlovida faol ishtirok"
       ],
-      photo: "../photos/Asaloy.jpg"
+      photo: "../Photos/Asaloy.jpg"
     },
     {
       id: 10,
@@ -127,7 +127,7 @@ export const students = [
         "“Oltin kuzning Rapid turniri” — 3-o‘rin",
         "“Xiva bahori” — 3-o‘rin"
       ],
-      photo: "../photos/Salohiddin.jpg"
+      photo: "../Photos/Salohiddin.jpg"
     },
     {
       id: 11,
@@ -137,7 +137,7 @@ export const students = [
         "“Iqtidor” tanlovida 1-o‘rin",
         "“Tilga e’tibor — elga e’tibor” tanlovida faxrli o‘rin"
       ],
-      photo: "../photos/Yusufboy.jpg"
+      photo: "../Photos/Yusufboy.jpg"
     }
   ];
   
