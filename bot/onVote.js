@@ -48,7 +48,16 @@ async function renderAllStudents(chatId, students) {
 
   // Send each student's card one by one
   for (const student of students) {
-    const caption = `👤 *${student.name}*\n🏫 Sinf: ${student.class}\n🆔 ID: ${student._id}`;
+    // Build caption with achievements
+    let caption = `👤 *${student.name}*\n🏫 Sinf: ${student.class}\n\n`;
+    
+    // Add achievements if available
+    if (student.achievements && Array.isArray(student.achievements) && student.achievements.length > 0) {
+      caption += `🎓 Yutuqlari:\n`;
+      student.achievements.forEach((achievement) => {
+        caption += `• ${achievement}\n`;
+      });
+    }
 
     // Get photo path
     const fileName = path.basename(student.photo || "");
