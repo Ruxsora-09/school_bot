@@ -28,16 +28,12 @@ bot.on("message", async (msg) => {
   const text = msg.text;
   const name = msg.chat.first_name;
 
-  // 🔒 ADMIN /results
+  // 📊 /results - visible to everyone
   if (text === "/results") {
-    if (!ADMINS.includes(chatId)) {
-      return bot.sendMessage(chatId, "❌ Siz admin emassiz.");
-    }
-  
     const students = await Student.find().sort({ votes: -1 });
   
     if (!students.length) {
-      return bot.sendMessage(chatId, "Hali ovoz yo‘q.");
+      return bot.sendMessage(chatId, "Hali ovoz yo'q.");
     }
   
     let msgText = "📊 Ovozlar:\n\n";
