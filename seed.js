@@ -127,7 +127,7 @@ const students = [
   },
   {
     name: "Qurbondurdiyev Yusufboy",
-    class: "7-B",
+    class: "7-A",
     photo: "./Photos/Yusufboy.jpg",
     achievements: [
       "“Iqtidor” tanlovida 1-o‘rin",

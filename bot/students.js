@@ -132,7 +132,7 @@ export const students = [
     {
       id: 11,
       name: "Qurbondurdiyev Yusufboy",
-      class: "7-B",
+      class: "7-A",
       achievements: [
         "“Iqtidor” tanlovida 1-o‘rin",
         "“Tilga e’tibor — elga e’tibor” tanlovida faxrli o‘rin"
